@@ -1,0 +1,4 @@
+<META HTTP-EQUIV="refresh" CONTENT="5;URL=[% url %]">
+[% META title="I is in ur browser, redirecting ur sessionz" %] 
+<p><a href="[% url %]"><img src="[% kitteh %]" alt="random kitten on ox4li redirect page" /></a></p>
+<h1>OX4li iz redirectin ur browser &hellip;</h1>

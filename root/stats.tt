@@ -1,0 +1,4 @@
+<p>
+This is a TT view template, called '[% template.name %]'.
+Our code is '[% code %]'.
+</p>

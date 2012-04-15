@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta name="keywords"    content="ox4li, URL shortener, URI tool, ox4, oxford" />
+	<meta name="author"      content="ciderpunx" />
+	<meta name="description" content="OX4LI: Yet another URL shortener." />
+	<meta name="generator"   content="vim,catalyst" />
+	<link rel="stylesheet" type="text/css" href="/static/css/o.css" />
+	<title>[% template.title or "OX4.li" %]</title>
+</head>
+
+<body>
+
+    <div id="wrapper">
+	    <div id="body">
+		    <div id="menu">
+					<ul>
+							<li><a href="[% c.uri_for('/') %]">Home</a></li>
+							[% IF c.user_exists %]
+								<li><a href="[% c.uri_for('/list') %]">Browse links</a></li>
+								<li><a href="[% c.uri_for('/about') %]">About</a></li>
+								<li><a href="[% c.uri_for(c.controller('Auth').action_for('logout')) %]">Log out</a></li>
+							[% ELSE %]
+								<li><a href="[% c.uri_for('/about') %]">About</a></li>
+								<li><a href="[% c.uri_for(c.controller('Auth').action_for('login')) %]">Log in</a></li>
+							[% END %]
+
+					</ul>
+		    </div><!-- end menu -->
+	    
+		    <div id="content">
+				[% UNLESS no_logo %]
+					<a href="[% c.uri_for('/') %]"><img id="logo" alt="ox4li: it makes urls shorter" src="/static/images/ox4lilogo.png" /></a>
+				[% END %]
+			[%# Status and error messages %]
+			<p>
+				[% IF status_msg %]
+					<span class="message">[% status_msg %]</span>
+				[% END %]
+				[% IF status_msg AND error_msg %] <br /> [% END %]
+				[% IF error_msg %]
+					<span class="error">[% error_msg %]</span>
+				[% END %]
+			</p>
+			[% content %]
+		    </div><!-- end content -->
+	    </div><!-- end body -->
+    <div id="footer">You might want to look at <a href="http://ox4.org">OX4, webhosting for Oxford activism</a>.<a href="http://www.catalystframework.org/"><img alt="powered by catalyst" src="[% c.uri_for('/static/images/btn_88x31_powered.png') %]" /></a></div>
+    </div><!-- end wrapper -->
+
+</body>
+</html>
+

@@ -1,0 +1,21 @@
+<h1>What&#8217;s all this, then?</h1>
+<div class="normalleft">
+	<p>OX4li is an URL shortener. Unlike most URL shorteners, it does not log people's private information. Some of its other features are:</p>
+	<ul>
+		<li>Proper 301 redirects which is <a href="http://www.seomoz.org/blog/the-benefits-and-pitfalls-of-url-shorteners">better for SEO</a></li>
+		<li>Allows custom URLs</li>
+		<li>Spam URLs are automatically rejected by <a href="http://www.surbl.org/redirection-sites">SURBL</a></li>
+		<li>Full unicode support: so you can put wacky characters in your custom URLs</li>
+		<li>Records number of times an URL is visited &mdash; just add /stats to the end of your shortened URL</li>
+		<li>Kitten redirects &mdash; just add /kitteh to the end of your URL</li>
+	</ul>
+	<p>Features that I will probably add include</p>
+	<ul>
+		<li>Occasional random kitten popups</li>
+		<li>Automatic domain expiry</li>
+		<li>Automatic spam link removal</li>
+		<li>Public short URL creation API</li>
+	</ul>
+	<p>I will release the code under the GPL when its a bit more done. I will keep the project going if people use it. Probably.</p>
+
+</div>

@@ -1,0 +1,22 @@
+<p>Total links: [% pager.total_entries %] </p>
+
+<ul class="narrowleft">
+[% FOREACH link IN links -%]
+	<li><a href="[% c.uri_for(link.code,'stats') %]">[% c.uri_for(link.code) %]</a>
+	&rarr; <a href="[% link.url %]">[% link.url %]</a> ([% link.count %])</li>
+[% END -%]
+</ul>
+
+<p>
+[% IF pager.previous_page %]
+	<a href="[% c.uri_for("/list", { page => pager.previous_page}) %]">Previous</a>
+[% END %]
+
+[% IF pager.previous_page && pager.next_page %]
+ :: 
+[% END %]
+
+[% IF pager.next_page %]
+	<a href="[% c.uri_for("/list", { page => pager.next_page}) %]">Next</a>
+[% END %]
+</p>

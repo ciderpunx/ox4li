@@ -1,0 +1,27 @@
+<h1>Stats for [% c.uri_for(link.code) %]</h1>
+
+<div class="narrowleft">
+<ul>
+<li><a href="[% c.uri_for(link.code) %]">[% c.uri_for(link.code) %]</a> is a shortened URI.</li>
+<li>The URI to which it points is <a href="[% link.url%]">[% link.url %]</a>.</li>
+<li>It has been visited [% link.count %] times.</li>
+[% IF c.user_exists %]
+<li><a href="[% c.uri_for(link.code,'delete') %]" 
+	onclick="if(!confirm('Do you really want to delete this link?')){ return false; };">Delete</a> [% c.uri_for(link.code) %]</li>
+[% END%]
+</ul>
+
+[% IF c.user_exists %]
+<form action="[% c.uri_for(link.code,'update_url') %]" method="post" accept-charset="utf-8">
+	<p class="small">
+		<label for="url">Change taget URL</label>
+		<input type="text" id="url" name="url" value="[% link.url %]" size="30" style="font-size:13px;width:250px;"/>
+		<input type="submit" value="Update">
+	</p>
+</form>
+[% END%]
+
+
+<p class="small">These are the only statistics that we store. Any other stats might invade people&#8217;s privacy. Learn more about how to stay safe online at 
+<a href="http://techtoolsforsctivism.net">Tech Tools For Activism</a>.</p>
+</div>

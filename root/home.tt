@@ -1,0 +1,24 @@
+<form id="shortenform" action="[% c.uri_for('create') %]" method="post">
+<p class="nomargin">
+	<label for="url" class="hid">Shorten this URL</label><br />
+	<input type="text" size="50" name="url" id="url" value="" />
+</p>
+<p class="underbox nomargin">
+	<a href="#" id="togglebtn" onclick="toggle('extra','togglebtn');return false;" class="small">Customize ▼</a><br />
+</p>
+<p id="extra" class="small" style="display:none">
+	<label for="custom" >[% c.uri_for('/') %]</label>
+	<input type="text" size="28" name="custom" id="custom" value="" /><br />
+</p>
+<p class="nomargin"> 
+	<input type="submit"  id="go" value=" Shorten! " /> 
+</p>
+</form>
+<script type="text/javascript">//<!--
+function toggle(obj,caller) {
+	var el = document.getElementById(obj);
+	el.style.display = (el.style.display == 'none' ? '' : 'none' );
+	var btn = document.getElementById(caller);
+	btn.innerHTML = (el.style.display == 'none' ? 'Customize ▼' : '▲');
+}
+//--></script>
