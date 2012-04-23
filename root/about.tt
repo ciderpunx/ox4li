@@ -2,24 +2,24 @@
 <div class="normalleft">
 	<p>OX4li is an URL shortener. Unlike most URL shorteners, it does not log people&#8217;s private information. Some of its other features are:</p>
 	<ul>
-		<li>Proper 301 redirects which is <a href="http://www.seomoz.org/blog/the-benefits-and-pitfalls-of-url-shorteners">better for SEO</a></li>
-		<li>Allows custom URLs</li>
-		<li>Spam URLs are automatically rejected by <a href="http://www.surbl.org/redirection-sites">SURBL</a></li>
-		<li>Full unicode support: so you can put wacky characters in your custom URLs</li>
-		<li>Records number of times an URL is visited &mdash; just add /stats to the end of your shortened URL</li>
-		<li>Kitten redirects &mdash; just add /kitteh to the end of your URL</li>
-		<li>Generate <a href="https://en.wikipedia.org/wiki/QR_Code">QR codes</a> for people with mobile phones &mdash; just add /qr to the end of your short URL</li>
+		<li>Proper 301 redirects which is <a href="http://www.seomoz.org/blog/the-benefits-and-pitfalls-of-url-shorteners">better for SEO</a>.</li>
+		<li>Allows custom URLs.</li>
+		<li>Spam URLs are automatically rejected by <a href="http://www.surbl.org/redirection-sites">SURBL</a>.</li>
+		<li>Full unicode support: so you can put wacky characters in your custom URLs.</li>
+		<li>Records number of times an URL is visited &mdash; just add /stats to the end of your shortened URL.</li>
+		<li>Kitten redirects &mdash; just add /kitteh to the end of your URL.</li>
+		<li>Generate <a href="https://en.wikipedia.org/wiki/QR_Code">QR codes</a> for people with mobile phones &mdash; just add /qr to the end of your shortened URL.</li>
 		<li>OX4li is <a href="http://www.gnu.org/philosophy/free-sw.html">Free Software</a>. You can <a href="https://gitorious.org/ox4li/ox4li">download the source code</a> and make your own shortener.</li>
 	</ul>
 	<p>Features that I will probably add include</p>
 	<ul>
-		<li>Automatic domain expiry</li>
-		<li>Automatic spam link removal</li>
-		<li>Public short URL creation API</li>
+		<li>Automatic domain expiry.</li>
+		<li>Automatic spam link removal.</li>
+		<li>Public short URL creation API.</li>
 		<li>Ability to proxy links through an anonymizer. If I can find one that doesn&#8217;t log.</li>
-		<li>White labelling</li>
-		<li>Dump of data publicaly archived somehow. Possibly with <a href="http://archiveteam.org/index.php?title=TinyURL">archivete.am</a> or with <a href="http://301works.org">301works</a>.</li>
+		<li>White labelling.</li>
+		<li>Dump of data publicaly archived somehow. Possibly with <a href="http://archiveteam.org/index.php">urlte.am</a> or with <a href="http://301works.org">301works</a>.</li>
 	</ul>
-	<p>I will keep the project going if people use it. Probably. I&#8217;m looking into ways to archive all the URLs publicly.</p>
+	<p>I will keep the project going if people use it. Probably.</p>
 
 </div>
