@@ -1,4 +1,9 @@
 <p>Your shortened link is: <a href="[% c.uri_for(link.code) %]">[% c.uri_for(link.code) %]</a></p>
-<p class="small">Original URI was: <a href="[% link.url %]">[% link.url %]</a>. <br />
-You can see stats at: <a href="[% c.uri_for(link.code,'stats') %]">[% c.uri_for(link.code,'stats') %]</a>, or redirect via a kitten at: <a href="[% c.uri_for(link.code,'kitteh') %]">[% c.uri_for(link.code,'kitteh') %]</a></p>
+<p class="small">Original URI was: <a href="[% link.url %]">[% link.url %]</a>. </p>
+
+<ul class="small">
+	<li>View stats at: <a href="[% c.uri_for(link.code,'stats') %]">[% c.uri_for(link.code,'stats') %]</a></li>
+	<li>QR code at: <a href="[% c.uri_for(link.code,'qr') %]">[% c.uri_for(link.code,'stats') %]</a></li>
+	<li>Redirect via a kitten at: <a href="[% c.uri_for(link.code,'kitteh') %]">[% c.uri_for(link.code,'kitteh') %]</a></li>
+</ul>
 <p>Create <a href="[% c.uri_for("/") %]">another</a>?</p>

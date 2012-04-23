@@ -110,7 +110,7 @@ sub index_redirect : Chained('/') PathPart('') Args(1) {
 
 =head2 index_stats
 
-index_stats
+index_stats: badly named chained method used by stats, kitteh, etc
 
 =cut
 
@@ -137,9 +137,9 @@ sub stats :Chained('index_stats') :Args(0) {
 
 }
 
-=head2 stats
+=head2 kitteh
 
-stats page
+adds an intermediate lolcat into your redirect
 
 =cut
 
@@ -161,9 +161,40 @@ sub kitteh :Chained('index_stats') :Args(0) {
 
 }
 
+
+=head2 qr
+
+Makes your URL into a QR code. For people that like that sort of nonsense
+NB: We use low error correction level and a high version and module size
+The wikipedia page for QR codes is a useful resource https://en.wikipedia.org/wiki/QR_Code
+
+=cut
+
+
+sub qr :Chained('index_stats') :Args(0) {
+    my ( $self, $c ) = @_;
+    my $link = $c->model('DB::Links')->find({code => $c->stash->{'code'} });
+    if($link) {
+        $c->stash(
+            qrcode => $link->url,
+            qrcode_conf => {
+                ecc         => 'L',
+                version     => 4,
+                module_size => 5,
+                img_type    => 'png',
+            },     
+            
+        );
+        $c->forward( $c->view( 'QRcode' ) );
+    }
+    else {
+        $c->stash(template => 'home.tt' );
+    }
+}
+
 =head2 delete
     
-    Delete a link TODO authentication
+    Delete a link 
     
 =cut
     
@@ -188,7 +219,7 @@ sub delete :Chained('index_stats') PathPart('delete') Args(0) {
 
 =head2 update
     
-    Update a link TODO authentication
+    Update a link 
     
 =cut
     

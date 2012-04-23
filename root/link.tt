@@ -22,6 +22,10 @@
 [% END%]
 
 
-<p class="small">These are the only statistics that we store. Any other stats might invade people&#8217;s privacy. Learn more about how to stay safe online at 
+<p class="small"><a href="[% c.uri_for(link.code,'qr') %]"><img src="[% c.uri_for(link.code,'qr') %]" style="width:100px;float:right;padding:0" alt="QR code for [% c.uri_for(link.code) %]"/></a>
+These are the only statistics that we store. Any other stats might invade people&#8217;s privacy. Learn more about how to stay safe online at 
 <a href="http://techtoolsforsctivism.net">Tech Tools For Activism</a>.</p>
 </div>
+
+<p class="narrowleft" >
+</p>

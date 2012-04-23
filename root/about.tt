@@ -8,14 +8,17 @@
 		<li>Full unicode support: so you can put wacky characters in your custom URLs</li>
 		<li>Records number of times an URL is visited &mdash; just add /stats to the end of your shortened URL</li>
 		<li>Kitten redirects &mdash; just add /kitteh to the end of your URL</li>
+		<li>Generate <a href="https://en.wikipedia.org/wiki/QR_Code">QR codes</a> for people with mobile phones &mdash; just add /qr to the end of your short URL</li>
 		<li>OX4li is <a href="http://www.gnu.org/philosophy/free-sw.html">Free Software</a>. You can <a href="https://gitorious.org/ox4li/ox4li">download the source code</a> and make your own shortener.</li>
 	</ul>
 	<p>Features that I will probably add include</p>
 	<ul>
-		<li>Occasional random kitten popups</li>
 		<li>Automatic domain expiry</li>
 		<li>Automatic spam link removal</li>
 		<li>Public short URL creation API</li>
+		<li>Ability to proxy links through an anonymizer. If I can find one that doesn&#8217;t log.</li>
+		<li>White labelling</li>
+		<li>Dump of data publicaly archived somehow. Possibly with <a href="http://archiveteam.org/index.php?title=TinyURL">archivete.am</a> or with <a href="http://301works.org">301works</a>.</li>
 	</ul>
 	<p>I will keep the project going if people use it. Probably. I&#8217;m looking into ways to archive all the URLs publicly.</p>
 
