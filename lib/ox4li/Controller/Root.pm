@@ -1,6 +1,7 @@
 package ox4li::Controller::Root;
 use Moose;
 use Net::Blacklist::Client;
+use LWP::UserAgent;
 use Domain::PublicSuffix;
 use HTML::Strip;
 use Math::Base36 ':all';
@@ -108,6 +109,45 @@ sub index_redirect : Chained('/') PathPart('') Args(1) {
     }
 }
 
+=head2 rdr
+
+Redirect a link from another shortener, so that the remote host will appear to be this 
+server rather than the client. As we don't log this has the effect of "stripping" the
+tracking from other url shorteners, or at least anonymizing the client. 
+
+=cut
+
+sub rdr : Chained('/') PathPath('rdr') Args() {
+    my ( $self, $c, @url ) = @_;
+    my $url = join "/",@url;
+
+    if(!$url) {
+        $url = $c->req->param('url');    
+    }
+
+    # no url now means we are on the form
+    if(!$url) {
+            $c->stash(template => 'rdr.tt');
+            return;
+    }
+
+    # TODO: refactor url tidyup, repetition
+    $url="http://$url" unless($url =~ /https?:\/\//); 
+    unless(is_web_uri($url)) {
+            $c->stash(template => 'rdr.tt', error_msg =>'Woah there! What kind of crazy URL is that?' );
+            return;
+    }
+
+    my $ua = LWP::UserAgent->new; 
+    my $head = $ua->head($url); 
+    my $final_url = $head->request->uri->as_string;
+
+    $c->log->debug($final_url); 
+
+    $c->res->redirect($final_url,301);
+}
+
+
 =head2 index_stats
 
 index_stats: badly named chained method used by stats, kitteh, etc
@@ -161,7 +201,6 @@ sub kitteh :Chained('index_stats') :Args(0) {
 
 }
 
-
 =head2 qr
 
 Makes your URL into a QR code. For people that like that sort of nonsense
@@ -194,7 +233,7 @@ sub qr :Chained('index_stats') :Args(0) {
 
 =head2 delete
     
-    Delete a link 
+Delete a link 
     
 =cut
     
@@ -219,7 +258,7 @@ sub delete :Chained('index_stats') PathPart('delete') Args(0) {
 
 =head2 update
     
-    Update a link 
+Update a link 
     
 =cut
     
@@ -367,9 +406,9 @@ sub create :Chained('/') Args(0) {
     }
 }
 
-=head2 index
+=head2 about
 
-The root page (/)
+The about page (/)
 
 =cut
 
@@ -377,6 +416,9 @@ sub about :Local Args(0) {
     my ( $self, $c ) = @_;
     $c->stash(template => 'about.tt' );
 }
+
+
+
 =head2 default
 
 Standard 404 error page

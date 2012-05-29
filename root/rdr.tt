@@ -1,0 +1,17 @@
+<h1>The Obfulizer</h1>
+
+<form id="shortenform" action="[% c.uri_for('rdr') %]" method="get">
+<p class="nomargin">
+	<label for="url" class="hid">Redirect URL</label><br />
+	<input type="text" size="50" name="url" id="url" value="" />
+</p>
+<p class="nomargin"> 
+	<input type="submit"  id="go" value=" Obfulize! " /> 
+</p>
+</form>
+
+<h2>What is this?</h2>
+<p class="narrowleft">
+This tool lets you post in URLs from other shorteners. These URLs are followed up to the final destination and you go straight there. The other URL shortener will see our IP address not yours, and we won&#8217;t log your visit. This should help you protect your privacy from URL shortener operators somewhat. 
+</p>
+

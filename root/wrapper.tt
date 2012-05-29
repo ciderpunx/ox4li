@@ -20,9 +20,11 @@
 							[% IF c.user_exists %]
 								<li><a href="[% c.uri_for('/list') %]">Browse links</a></li>
 								<li><a href="[% c.uri_for('/about') %]">About</a></li>
+								<li><a href="[% c.uri_for('/rdr') %]">Obfulizer</a></li>
 								<li><a href="[% c.uri_for(c.controller('Auth').action_for('logout')) %]">Log out</a></li>
 							[% ELSE %]
 								<li><a href="[% c.uri_for('/about') %]">About</a></li>
+								<li><a href="[% c.uri_for('/rdr') %]">Obfulizer</a></li>
 								<li><a href="[% c.uri_for(c.controller('Auth').action_for('login')) %]">Log in</a></li>
 							[% END %]
 
