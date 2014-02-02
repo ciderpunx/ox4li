@@ -32,9 +32,21 @@
 <h2>What is this?</h2>
 <p>
 Link shorteners and some email link tracking tools work by redirecting you to a page via another intermediate server. This intermediate server can then log the fact that you have clicked the shortened link,
-along with some amount of data about you including your IP address, time of visit and so on. Spammers also use this technique to present plausible looking URLs in emails which, when clicked, redirect to a malicious URL. 
+along with some amount of data about you including your IP address, time of visit and so on. 
 </p>
 <p>
-When you paste in an URL to the box, this tool shows you which URLs you will be redirected through (by following them itself) and provides a link to the final URL. This means that intermediate servers cannot log your IP address or behaviour &mdash; which you may resent corporations like Twitter, Facebook, Google et al from collecting in order to spy on your online behaviour. It also means that you can inspect where you will end up if you click a link. THis might help a little in avoiding being scammed into visiting URLs that are malicious or just that you didn&#827;t want to visit.
+Spammers can also use this technique to present plausible looking URLs in emails which, when clicked, redirect to a malicious URL. 
+</p>
+<p>
+When you paste in an URL to the box, this tool shows you which URLs you will be redirected through by following them itself. It also provides a link to the final URL. This means that intermediate servers cannot log things about you. So corporations like Twitter, Facebook, Google et al will find it harder to spy on your online behaviour. 
+</p>
+<p>
+It also means that you can inspect where you will end up if you click a link. THis might help a little in avoiding being scammed into visiting URLs that are malicious or just that you didn&#827;t want to visit.
+</p>
+<h2>Important caveats</h2>
+<p>
+Some links may be created to be unique to you and this tool cannot prevent such tools from registering that that link has been followed when it is followed. i</p>
+<p>
+We don&#8217;t log your IP address, but it is very likely that the server at the final URL does. And you shouldn&#8217;t believe us when we say we don&##8217;t log your IP address. Use a proper anonymity tool like <a href="https://www.torproject.org/">tor</a> to protect your privacy. 
 </p>
 </div>
