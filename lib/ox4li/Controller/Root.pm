@@ -147,6 +147,51 @@ sub rdr : Chained('/') PathPath('rdr') Args() {
     $c->res->redirect($final_url,301);
 }
 
+=head2 unwrap
+
+I think that it is rather useful to be able to see the intermediate redirects in a 
+redirect chain as well as being able to redirect to the original URL as per rdr. This 
+implements that, and will probably mean that rdr gets deprecated sometime soon.
+
+=cut
+
+sub unwrap : Chained('/') PathPath('unwrap') Args() {
+    my ( $self, $c, @url ) = @_;
+    my $url = join "/",@url;
+
+    if(!$url) {
+        $url = $c->req->param('url');    
+    }
+
+    # no url now means we are on the form
+    if(!$url) {
+            $c->stash(template => 'unwrap.tt');
+            return;
+    }
+
+    # TODO: refactor url tidyup, repetition
+    $url="http://$url" unless($url =~ /https?:\/\//); 
+    unless(is_web_uri($url)) {
+            $c->stash(template => 'unwrap.tt', error_msg =>'Woah there! What kind of crazy URL is that?' );
+            return;
+    }
+
+    my $ua = LWP::UserAgent->new; 
+    my $head = $ua->head($url); 
+    my $final_url = $head->request->uri->as_string;
+    my @intermediate_urls = map { $_->request->uri->as_string }
+        $head->redirects;
+    $c->log->debug("!!!!!" . join "-->", @intermediate_urls);
+
+    $c->log->debug($final_url); 
+    $c->stash(
+        template          => 'unwrap.tt',
+        original_url      => $url,
+        final_url         => $final_url,
+        intermediate_urls => \@intermediate_urls
+    );
+
+}
 
 =head2 index_stats
 

@@ -1,0 +1,40 @@
+<h1>Redirect unwrapper</h1>
+
+[% IF final_url %]
+  <div class="narrowleft">
+    <h2>[% original_url %]&#8217;s redirect chain</h2>
+  [% IF intermediate_urls && intermediate_urls.size > 0 %]
+        <h3>Intermediate URLS</h3>
+        <ol>
+	[% FOREACH iu=intermediate_urls %]
+  	  <li><a href="[% iu %]">[% iu %]</a></li>
+        [% END %]
+        </ol>
+  [% ELSE %]
+     <h3>No intermediate URLS, this is a direct link</h3>
+  [% END %]
+    <h3>Final URL</h3>
+    <p><a href="[% final_url %]">[% final_url %]</a></p>
+  </div>
+[% END %]
+
+<form id="shortenform" action="[% c.uri_for('unwrap') %]" method="get">
+<p class="nomargin">
+	<label for="url" class="hid">Redirect URL</label><br />
+	<input type="text" size="50" name="url" id="url" value="" />
+</p>
+<p class="nomargin"> 
+	<input type="submit"  id="go" value=" Unwrap! " /> 
+</p>
+</form>
+
+<div class="narrowleft">
+<h2>What is this?</h2>
+<p>
+Link shorteners and some email link tracking tools work by redirecting you to a page via another intermediate server. This intermediate server can then log the fact that you have clicked the shortened link,
+along with some amount of data about you including your IP address, time of visit and so on. Spammers also use this technique to present plausible looking URLs in emails which, when clicked, redirect to a malicious URL. 
+</p>
+<p>
+When you paste in an URL to the box, this tool shows you which URLs you will be redirected through (by following them itself) and provides a link to the final URL. This means that intermediate servers cannot log your IP address or behaviour &mdash; which you may resent corporations like Twitter, Facebook, Google et al from collecting in order to spy on your online behaviour. It also means that you can inspect where you will end up if you click a link. THis might help a little in avoiding being scammed into visiting URLs that are malicious or just that you didn&#827;t want to visit.
+</p>
+</div>
