@@ -1,0 +1,9 @@
+{
+	"shortUrl"    : "[% c.uri_for(link.code) %]",
+	"userHash"    : "[% c.uri_for(link.code) %]",
+	"hash"        : "[% c.uri_for(link.code) %]",
+	"originalUrl" : "[% link.url %]",
+	"qrCode"      : "[% c.uri_for(link.code,'qr') %]",
+	"stats"       :  "[% c.uri_for(link.code,'stats') %]",
+	"kitteh"      : "[% c.uri_for(link.code,'kitteh') %]"
+}

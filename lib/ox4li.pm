@@ -13,7 +13,6 @@ use Catalyst::Runtime 5.90011;
 #                 directory
 
 use Catalyst qw/
-    -Debug
     ConfigLoader
     Static::Simple
     Authentication

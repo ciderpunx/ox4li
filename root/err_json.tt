@@ -1,0 +1,7 @@
+{
+    "errors" : [
+        [% FOREACH err IN errors %]
+            "[% err %]"[% UNLESS loop.last %], [% END %]
+        [% END %]
+    ]
+}

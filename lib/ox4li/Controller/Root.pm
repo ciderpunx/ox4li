@@ -345,109 +345,32 @@ standard create method
 
 sub create :Chained('/') Args(0) {
     my ( $self, $c ) = @_;
-    
-    my $url    = $c->req->params->{url};
-    my $custom = $c->req->params->{custom}; 
-	my $hs = HTML::Strip->new();
-	$custom = $hs->parse($custom);
-	$hs->eof;
-    my $code   = '';
-    
-    ## Check length of code, url params 
-    if(length $url > 500 || length $url < 10 ) {
-            $c->stash(template => 'home.tt', error_msg =>'Only URLs from 10 to 500 characters long.' );
-            return;
-    }
-    if ($url eq '') {
-            $c->stash(template => 'home.tt', error_msg =>'Cannot cope with blank URLs.' );
-            return;
-    }
-    if($custom && (length $custom < 3 || length $custom > 50)) {
-            $c->stash(template => 'home.tt', error_msg =>'Custom URLs should be from 10 to 50 characters long.' );
-            return;
-    }
-
-    # add http/s as protocol
-    $url="http://$url" unless($url =~ /https?:\/\//); 
-    
-    # check we got a valid URL
-    unless(is_web_uri($url)) {
-            $c->stash(template => 'home.tt', error_msg =>'Woah there! What kind of crazy URL is that?' );
-            return;
-    }
-
-    my $host = URI->new($url)->host;
-    $c->log->debug("Submitted host was $host");
-    unless($host) {
-            $c->stash(template => 'home.tt', error_msg =>'Woah there! What kind of crazy URL is that?' );
-            return;
-    }
-
-
-    # Do a spam lookup and block if it is listed 
-    my $rbl     = Net::Blacklist::Client->new;
-    $c->log->debug("Doing lookup on host $host");
-    my $result0 = $rbl->lookup_domain( $host );
-    my $suffix  = new Domain::PublicSuffix;
-    my $root = $suffix->get_root_domain($host);
-    unless($root) {
-            $c->stash(template => 'home.tt', error_msg =>'Woah there! What kind of crazy URL is that?' );
-            return;
-    }
-
-    $c->log->debug("Doing lookup on root $root");
-    my $result1 = $rbl->lookup_domain($root);
-    my $lookup  = '';
-
-    foreach my $list (keys %$result0){
-                $lookup .= sprintf "%s: %s (%s)\n", $list, $result0->{$list}->{a}, $result0->{$list}->{txt};
-    }
-    foreach my $list (keys %$result1){
-                $lookup .= sprintf "%s: %s (%s)\n", $list, $result1->{$list}->{a}, $result1->{$list}->{txt};
-    }
-
-
-    if($lookup) {
-            sleep 5;
-            $c->stash(template => 'home.tt', error_msg =>'Error: Spam URLs are not supported.' );
-            return;
-    }
-
-    if($custom ne ''){
-            my $link = $c->model('DB::Links')->find({code => $custom});
-            if($link){
-                $c->stash(template => 'home.tt', error_msg =>'Sorry that short URL is taken.' );
-                return;
-            }
-            $code = $custom;
+    $c->forward('_create');
+    if (@{ $c->error }) {
+        $c->stash(template => 'home.tt', error_msg => join '<br />', @{$c->error} );
     }
     else {
-        # get last index from db, Base36 encode it and set that as code    
-        my $max_id = $c->model('DB::Links')->get_column('id')->max;
-        my $code_ok = 0;
-        while (!$code_ok) {
-            $code   = lc encode_base36(++$max_id);
-            my $link = $c->model('DB::Links')->find({code => $code});
-            $code_ok = 1 unless($link);
-        }
+        $c->stash(template => 'create_done.tt');
     }
+}
 
-    # TODO: atm only one instance of an URL can exist -- is that OK? 
-    my $link = $c->model('DB::Links')->find({url => $url});
-    if($link){
-        $c->stash(status_msg=>'Cool. Someone else already shortened that URL!' );
-        $c->stash(link => $link, template => 'create_done.tt');
-        $c->response->header('Cache-Control' => 'no-cache');
-    }        
+=head2 json_create 
+
+API create. Mostly for graham, but actually quite useful
+
+=cut
+
+sub json_create :Chained('/') Args(0) {
+    my ( $self, $c ) = @_;
+    $c->forward('_create');
+    $c->res->content_type('application/json; charset=utf-8');
+    $c->stash('no_wrapper' => 1);
+    if ($c->stash->{errors}) {
+        $c->res->status(405);
+        $c->stash(template => 'err_json.tt', errors => $c->stash->{errors} );
+    }
     else {
-        my $new_link = $c->model('DB::Links')->create({
-                code  => $code,
-                url   => $url,
-                count => 0,
-        });
-        $c->stash(status_msg=>'Link created!' );
-        $c->stash(link => $new_link, template => 'create_done.tt');
-        $c->response->header('Cache-Control' => 'no-cache');
+        $c->stash(template => 'create_json_done.tt');
     }
 }
 
@@ -483,6 +406,120 @@ Attempt to render a view, if needed.
 =cut
 
 sub end : ActionClass('RenderView') {}
+
+=head2 _create
+
+Actually do the creating bit for an URL, so we can have an api call as well as an HTML call
+
+=cut
+
+sub _create :Private {
+    my ($self,$c) = @_;
+    my $url    = $c->req->params->{url};
+    my $custom = $c->req->params->{custom}; 
+
+    my $errors = '';
+
+	my $hs = HTML::Strip->new();
+	$custom = $hs->parse($custom);
+	$hs->eof;
+    my $code   = '';
+    
+    ## Check length of code, url params 
+    if(length $url > 500 || length $url < 10 ) {
+            $c->stash->{errors} = 'Only URLs from 10 to 500 characters long.';
+            return;
+    }
+    if ($url eq '') {
+            $c->stash->{errors} = 'Cannot cope with blank URLs.';
+            return;
+    }
+    if($custom && (length $custom < 3 || length $custom > 50)) {
+            $c->stash->{errors} = 'Custom URLs should be from 10 to 50 characters long.';
+            return;
+    }
+
+    # add http/s as protocol
+    $url="http://$url" unless($url =~ /https?:\/\//); 
+    
+    # check we got a valid URL
+    unless(is_web_uri($url)) {
+            $c->stash->{errors} = 'Woah there! What kind of crazy URL is that?';
+            return;
+    }
+
+    my $host = URI->new($url)->host;
+    unless($host) {
+            $c->stash->{errors} = 'Woah there! What kind of crazy URL is that?';
+            return;
+    }
+
+
+    # Do a spam lookup and block if it is listed 
+    my $rbl     = Net::Blacklist::Client->new;
+    my $result0 = $rbl->lookup_domain( $host );
+    my $suffix  = new Domain::PublicSuffix;
+    my $root = $suffix->get_root_domain($host);
+    unless($root) {
+            $c->stash->{errors} = 'Woah there! What kind of crazy URL is that?' ;
+            return;
+    }
+
+    my $result1 = $rbl->lookup_domain($root);
+    my $lookup  = '';
+
+    foreach my $list (keys %$result0){
+                $lookup .= sprintf "%s: %s (%s)\n", $list, $result0->{$list}->{a}, $result0->{$list}->{txt};
+    }
+    foreach my $list (keys %$result1){
+                $lookup .= sprintf "%s: %s (%s)\n", $list, $result1->{$list}->{a}, $result1->{$list}->{txt};
+    }
+
+
+    if($lookup) {
+            sleep 5;
+            $c->stash->{errors} = 'Error: Spam URLs are not supported.';
+            return;
+    }
+
+    if($custom ne ''){
+            my $link = $c->model('DB::Links')->find({code => $custom});
+            if($link){
+                $c->stash->{errors} = 'Sorry. That short URL is taken.';
+                return;
+            }
+            $code = $custom;
+    }
+    else {
+        # get last index from db, Base36 encode it and set that as code    
+        my $max_id = $c->model('DB::Links')->get_column('id')->max;
+        my $code_ok = 0;
+        while (!$code_ok) {
+            $code   = lc encode_base36(++$max_id);
+            my $link = $c->model('DB::Links')->find({code => $code});
+            $code_ok = 1 unless($link);
+        }
+    }
+
+    # TODO: atm only one instance of an URL can exist -- is that OK? 
+    my $link = $c->model('DB::Links')->find({url => $url});
+    if($link){
+        $c->stash(status_msg=>'Cool. Someone else already shortened that URL!' );
+        $c->stash(link => $link);
+        $c->response->header('Cache-Control' => 'no-cache');
+    }        
+    else {
+        my $new_link = $c->model('DB::Links')->create({
+                code  => $code,
+                url   => $url,
+                count => 0,
+        });
+        $c->stash(status_msg=>'Link created!' );
+        $c->stash(link => $new_link);
+        $c->response->header('Cache-Control' => 'no-cache');
+    }
+}
+
 
 =head1 AUTHOR
 
