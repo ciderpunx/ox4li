@@ -356,7 +356,8 @@ sub create :Chained('/') Args(0) {
 
 =head2 json_create 
 
-API create. Mostly for graham, but actually quite useful
+JSON API create. Suggested by Graham, and actually quite useful. As per the shorten method of the tinycc 
+shortener http://tiny.cc/api-docs. But with some extra fields. 
 
 =cut
 
@@ -374,6 +375,26 @@ sub json_create :Chained('/') Args(0) {
     }
 }
 
+=head2 text_create 
+
+Plain text API create, as per http://scripting.com/stories/2007/06/27/tinyurlHasAnApi.html,
+except I return a 405 error if something didn't work out.
+
+=cut
+
+sub text_create :Chained('/') Args(0) {
+    my ( $self, $c ) = @_;
+    $c->forward('_create');
+    $c->res->content_type('text/plain; charset=utf-8');
+    $c->stash('no_wrapper' => 1);
+    if ($c->stash->{errors}) {
+        $c->res->status(405);
+        $c->res->body("Errors encountered\n" . join "\n", $c->stash->{errors}, "\n");
+    }
+    else {
+        $c->res->body($c->uri_for($c->stash->{link}->code));
+    }
+}
 =head2 about
 
 The about page (/)
@@ -395,8 +416,8 @@ Standard 404 error page
 
 sub default :Path {
     my ( $self, $c ) = @_;
-    $c->response->body( 'Page not found' );
-    $c->response->status(404);
+    $c->res->body( 'Page not found' );
+    $c->res->status(404);
 }
 
 =head2 end
