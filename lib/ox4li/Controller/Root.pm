@@ -455,8 +455,12 @@ sub _create :Private {
             $c->stash->{errors} = 'Cannot cope with blank URLs.';
             return;
     }
-    if($custom && (length $custom < 3 || length $custom > 50)) {
-            $c->stash->{errors} = 'Custom URLs should be from 10 to 50 characters long.';
+    if($custom && (length $custom < 5 || length $custom > 50)) {
+            $c->stash->{errors} = 'Custom URLs should be from 5 to 50 characters long.';
+            return;
+    }
+    if ($custom =~ /\d{5,}$/) {
+            $c->stash->{errors} = 'Spammy looking code. Don\'t think so.';
             return;
     }
 
